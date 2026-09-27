@@ -13,8 +13,8 @@
   },
   "supabase": {
     "enabled": true,
-    "supabase_url": "https://your-project.supabase.co",
-    "supabase_service_key": "YOUR_SUPABASE_ANON_OR_SERVICE_KEY_HERE",
+    "supabase_url": "https://nbxafhihdrmyxpihasjd.supabase.co",
+    "supabase_service_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ieGFmaGloZHJteXhwaWhhc2pkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDQ5MjUyMCwiZXhwIjoyMTA2MDY4NTIwfQ._gQAMzoGfpHv-8H0_hZ0XVy7SG_IVlha_lv75a_-CT0",
     "auto_sync_interval_sec": 10
   },
   "sectors": [
