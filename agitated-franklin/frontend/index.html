@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARES — Defense-Grade OS Reconnaissance & Security Command Center</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <!-- FULLSCREEN SPLASH LANDING SCREEN -->
+    <div id="splash-screen">
+        <div class="markhor-container" id="splash-markhor-trigger" title="Click Markhor Emblem to Authenticate Access">
+            <div class="clock-ring"></div>
+            <div class="clock-ring-inner"></div>
+            <div class="markhor-orb">
+                <img src="assets/ares_markhor_logo.svg" alt="ARES Cyber Markhor Logo">
+            </div>
+        </div>
+
+        <div class="splash-title">ARES COMMAND CENTER</div>
+        <div class="splash-subtitle">ADVANCED RECONNAISSANCE & EVENT SECURITY SYSTEM (SIMULATED OS ENGINE)</div>
+        <div class="splash-prompt" style="cursor: pointer;">[ CLICK MARKHOR EMBLEM TO AUTHORIZE COMMAND ACCESS ]</div>
+    </div>
+
+    <!-- DEDICATED TACTICAL RESPONSE TEAM PORTAL SCREEN (STRICTLY ISOLATED) -->
+    <div id="team-portal-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-dark); z-index: 4500; flex-direction: column;">
+    </div>
+
+    <!-- Header / Tactical Command Bar -->
+    <header class="ares-header">
+        <div class="brand-container">
+            <div style="width: 44px; height: 44px;">
+                <img src="assets/ares_markhor_logo.svg" alt="ARES Markhor Logo" style="width: 100%; height: 100%;">
+            </div>
+            <div class="brand-title">
+                <h1>ARES COMMAND CENTER</h1>
+                <div class="brand-subtitle">ADVANCED RECONNAISSANCE & EVENT SECURITY SYSTEM</div>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="tab-overview">TACTICAL MAP & RADAR</button>
+            <button class="nav-tab" data-tab="tab-processes">PROCESS RECON</button>
+            <button class="nav-tab" data-tab="tab-scheduler">CPU SCHEDULER</button>
+            <button class="nav-tab" data-tab="tab-memory">MEMORY SIMULATOR</button>
+            <button class="nav-tab" data-tab="tab-deadlock">DEADLOCK & IPC</button>
+            <button class="nav-tab" data-tab="tab-attack">ATTACK INJECTOR</button>
+            <button class="nav-tab" data-tab="tab-cluster">CLUSTER BUILDER</button>
+            <button class="nav-tab" data-tab="tab-system-logs">SYSTEM AUDIT LOGS</button>
+        </nav>
+
+        <div class="status-bar">
+            <button class="btn-tactical" id="btn-command-auth">COMMAND LOGIN</button>
+            <div class="status-indicator">
+                <span class="dot" id="status-dot"></span>
+                <span id="status-text" style="color: var(--neon-cyan);">C++ CORE ENGINE ONLINE</span>
+            </div>
+            <div id="ares-clock" style="color: var(--text-muted);">UTC 00:00:00</div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard Body -->
+    <main class="dashboard-body">
+
+        <!-- TAB 1: Sector Command & Pakistan Map Overlay + Radar Sweep -->
+        <section class="tab-content active" id="tab-overview">
+            <div class="overview-grid">
+                
+                <!-- 3D Three.js Visualization -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>3D RECONNAISSANCE TELEMETRY CORE</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">THREE.JS PARTICLES & TERRAIN</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div id="three-canvas-container"></div>
+                    </div>
+                </div>
+
+                <!-- Pakistan Sector Map Overlay -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>PAKISTAN SECTOR-ZONE MAP OVERLAY</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">MONITORED CLUSTERS</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <div class="map-container" id="pakistan-map-container"></div>
+                    </div>
+                </div>
+
+                <!-- Telemetry Snapshot & Radar Sweep -->
+                <div class="panel" style="grid-column: span 2;">
+                    <div class="panel-header">
+                        <span>RECONNAISSANCE UNIT TELEMETRY & TACTICAL RADAR</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">LIVE SYSTEM METRICS</span>
+                    </div>
+                    <div class="panel-body" style="display: flex; gap: 16px;">
+                        
+                        <!-- Radar Sweep Canvas -->
+                        <div style="width: 220px; height: 180px; position: relative; background: #020408; border-radius: 4px; border: 1px solid var(--border-cyan);">
+                            <canvas id="radar-canvas"></canvas>
+                        </div>
+
+                        <!-- Metrics & Log feed -->
+                        <div style="flex: 1;">
+                            <div class="metrics-row">
+                                <div class="metric-card">
+                                    <div class="val" id="metric-total-cpu">--%</div>
+                                    <div class="label">Total CPU Load</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="val" id="metric-memory-pct">--%</div>
+                                    <div class="label">Memory Occupancy</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="val" id="metric-active-procs">--</div>
+                                    <div class="label">Active Daemons</div>
+                                </div>
+                            </div>
+
+                            <div style="font-weight: bold; color: var(--neon-cyan); margin-bottom: 4px; font-size: 0.85rem;">
+                                File System Integrity Log (inotify directory watcher):
+                            </div>
+                            <div id="file-events-list">
+                                <div style="color: var(--text-muted); font-size: 0.8rem;">Listening for file creation/modification events...</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: Process Reconnaissance & Hierarchy -->
+        <section class="tab-content" id="tab-processes">
+            <div class="panel" style="width: 100%;">
+                <div class="panel-header">
+                    <span>PROCESS TRACKER & HIERARCHY TREE (/proc)</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">REAL-TIME DAEMON MONITOR</span>
+                </div>
+                <div class="panel-body">
+                    <table class="ares-table">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>PPID</th>
+                                <th>PROCESS NAME</th>
+                                <th>STATE</th>
+                                <th>CPU %</th>
+                                <th>RAM USAGE</th>
+                                <th>SECTOR ZONE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="process-table-body">
+                            <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading system daemons...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: CPU Scheduler Simulator -->
+        <section class="tab-content" id="tab-scheduler">
+            <div id="scheduler-tab-content" style="width: 100%;"></div>
+        </section>
+
+        <!-- TAB 4: Virtual Memory Page Replacement Simulator -->
+        <section class="tab-content" id="tab-memory">
+            <div id="memory-tab-content" style="width: 100%;"></div>
+        </section>
+
+        <!-- TAB 5: Deadlock Detector & IPC -->
+        <section class="tab-content" id="tab-deadlock">
+            <div id="deadlock-tab-content" style="width: 100%;"></div>
+        </section>
+
+        <!-- TAB 6: Attack & Injection Engine -->
+        <section class="tab-content" id="tab-attack">
+            <div id="attack-tab-content" style="width: 100%;"></div>
+        </section>
+
+        <!-- TAB 7: Custom Cluster Builder -->
+        <section class="tab-content" id="tab-cluster">
+            <div id="cluster-tab-content" style="width: 100%;"></div>
+        </section>
+
+        <!-- TAB 8: System Audit Logs -->
+        <section class="tab-content" id="tab-system-logs">
+            <div class="panel" style="width: 100%;">
+                <div class="panel-header">
+                    <span>ARES SYSTEM & SUPABASE POSTGRES AUDIT LOGS</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">BACKEND PERSISTENCE ACTIVE</span>
+                </div>
+                <div class="panel-body">
+                    <div style="background: rgba(0, 240, 255, 0.05); padding: 14px; border-radius: 4px; border: 1px solid var(--border-cyan); margin-bottom: 16px;">
+                        <h4 style="color: var(--neon-cyan); margin-bottom: 6px;">NATIVE C++ SUPABASE BACKEND INTEGRATION STATUS</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">
+                            Supabase database connectivity is managed directly by the <strong>C++ Core Engine</strong> via <code style="color: var(--neon-green);">backend/config/ares_config.json</code> and <code style="color: var(--neon-green);">supabase/credentials.env</code>.
+                            System events, deadlock audits, and alert logs are automatically pushed to your PostgreSQL tables using high-performance HTTP REST calls.
+                        </p>
+                    </div>
+
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 8px;">LIVE SYSTEM EVENT LOG STREAM</h4>
+                    <div id="system-log-terminal" style="background: rgba(2, 4, 8, 0.9); border: 1px solid var(--border-cyan); padding: 12px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-green); height: 350px; overflow-y: auto; border-radius: 4px;">
+                        <div>[2026-09-27T14:24:00Z] [INFO] [System] ARES Military-Grade OS Reconnaissance Engine v2.4.0 active.</div>
+                        <div>[2026-09-27T14:24:02Z] [INFO] [SupabaseService] Native C++ REST Client connected to PostgreSQL backend.</div>
+                        <div>[2026-09-27T14:24:04Z] [INFO] [ReconCycle] Persisted telemetry snapshot to table [system_events].</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- UNIFIED DUAL-TAB LOGIN MODAL -->
+    <div id="unified-login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 8, 14, 0.92); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center;">
+        <div class="panel" style="width: 460px; padding: 24px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.4);">
+            
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px;">
+                        <img src="assets/ares_markhor_logo.svg" style="width: 100%; height: 100%;">
+                    </div>
+                    <h3 style="color: var(--neon-cyan); letter-spacing: 1px;">ARES SYSTEM GATEWAY</h3>
+                </div>
+                <button id="btn-close-modal" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.4rem;">✕</button>
+            </div>
+
+            <!-- DUAL MODE TABS: ADMIN vs TACTICAL TEAM -->
+            <div style="display: flex; gap: 8px; margin-bottom: 18px;">
+                <button class="modal-tab-btn active" id="tab-btn-admin">👑 ADMINISTRATOR</button>
+                <button class="modal-tab-btn team-tab" id="tab-btn-team">🛡️ TACTICAL TEAM</button>
+            </div>
+
+            <form id="unified-login-form">
+                
+                <!-- ADMIN FORM GROUP -->
+                <div id="admin-form-group" style="display: block;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+                        Verifying credentials against Supabase PostgreSQL <code style="color: var(--neon-green);">admin_users</code> database.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--neon-cyan); font-weight: bold;">ADMIN USERNAME:</label>
+                            <input type="text" id="admin-username-input" value="admin" required 
+                                   style="width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--border-cyan); color: #fff; padding: 10px; border-radius: 3px; font-family: var(--font-mono); margin-top: 4px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--neon-cyan); font-weight: bold;">SECURITY PASSCODE:</label>
+                            <input type="password" id="admin-password-input" value="admin123" required 
+                                   style="width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--border-cyan); color: #fff; padding: 10px; border-radius: 3px; font-family: var(--font-mono); margin-top: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TACTICAL TEAM FORM GROUP -->
+                <div id="team-form-group" style="display: none;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+                        Requires Team ID, Password, and <strong>Voice Biometric Passphrase Verification</strong>.
+                    </p>
+
+                    <!-- Voice Passphrase Verification Section -->
+                    <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid var(--neon-green); padding: 10px; border-radius: 4px; margin-bottom: 12px; text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;">
+                            <div id="voice-pass-indicator" style="width: 10px; height: 10px; border-radius: 50%; background: var(--neon-yellow);"></div>
+                            <span id="voice-status-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--neon-yellow);">VOICE UNVERIFIED. CLICK MIC TO SPEAK.</span>
+                        </div>
+                        <div style="display: flex; gap: 6px; justify-content: center;">
+                            <button type="button" class="btn-tactical" id="btn-start-voice-rec" style="padding: 6px 10px; font-size: 0.75rem;">
+                                🎤 START VOICE VERIFICATION
+                            </button>
+                            <button type="button" class="btn-tactical" id="btn-manual-voice-override" style="padding: 6px 10px; font-size: 0.75rem;">
+                                MANUAL VERIFY
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--neon-green); font-weight: bold;">ALLOTTED TEAM ID:</label>
+                            <input type="text" id="team-id-input" value="TEAM-01" required 
+                                   style="width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--border-cyan); color: #fff; padding: 10px; border-radius: 3px; font-family: var(--font-mono); margin-top: 4px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: var(--neon-green); font-weight: bold;">ASSIGNED TEAM PASSWORD:</label>
+                            <input type="password" id="team-pass-input" value="team123" required 
+                                   style="width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--border-cyan); color: #fff; padding: 10px; border-radius: 3px; font-family: var(--font-mono); margin-top: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-tactical" style="width: 100%; margin-top: 16px; padding: 12px; font-size: 0.9rem;">
+                    AUTHENTICATE SYSTEM ACCESS
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- JavaScript View Controllers -->
+    <script src="js/three_scene.js"></script>
+    <script src="js/pakistan_map.js"></script>
+    <script src="js/radar_sweep.js"></script>
+    <script src="js/ws_client.js"></script>
+    <script src="js/scheduler_view.js"></script>
+    <script src="js/memory_view.js"></script>
+    <script src="js/deadlock_view.js"></script>
+    <script src="js/attack_view.js"></script>
+    <script src="js/cluster_view.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/team_portal.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

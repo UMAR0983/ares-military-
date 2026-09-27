@@ -1,0 +1,27 @@
+{
+  "system": {
+    "name": "ARES Military-Grade OS Reconnaissance & Security System",
+    "version": "2.4.0-ENTERPRISE",
+    "environment": "TACTICAL_SIMULATION",
+    "server_port": 8080,
+    "polling_interval_ms": 2000
+  },
+  "logging": {
+    "log_level": "INFO",
+    "console_output": true,
+    "log_file": "ares_system.log"
+  },
+  "supabase": {
+    "enabled": true,
+    "supabase_url": "https://your-project.supabase.co",
+    "supabase_service_key": "YOUR_SUPABASE_ANON_OR_SERVICE_KEY_HERE",
+    "auto_sync_interval_sec": 10
+  },
+  "sectors": [
+    { "id": 1, "code": "SEC-01-ISB", "name": "Sector-1 (Islamabad Core)", "priority": "HIGH" },
+    { "id": 2, "code": "SEC-02-LHR", "name": "Sector-2 (Lahore Hub)", "priority": "MEDIUM" },
+    { "id": 3, "code": "SEC-03-KHI", "name": "Sector-3 (Karachi Coastal)", "priority": "CRITICAL" },
+    { "id": 4, "code": "SEC-04-PEW", "name": "Sector-4 (Peshawar Ridge)", "priority": "MEDIUM" },
+    { "id": 5, "code": "SEC-05-UET", "name": "Sector-5 (Quetta Outpost)", "priority": "HIGH" }
+  ]
+}
