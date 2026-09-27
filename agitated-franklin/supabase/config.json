@@ -1,0 +1,18 @@
+{
+  "supabase_project": {
+    "url": "https://nbxafhihdrmyxpihasjd.supabase.co",
+    "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ieGFmaGloZHJteXhwaWhhc2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0OTI1MjAsImV4cCI6MjEwNjA2ODUyMH0.9GKb-FrYfppq2SQYh6oljPryHTJyl73onadBseiD9rA",
+    "service_role_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ieGFmaGloZHJteXhwaWhhc2pkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDQ5MjUyMCwiZXhwIjoyMTA2MDY4NTIwfQ._gQAMzoGfpHv-8H0_hZ0XVy7SG_IVlha_lv75a_-CT0"
+  },
+  "tables": {
+    "system_events": "system_events",
+    "alert_logs": "alert_logs",
+    "scheduling_audits": "scheduling_audits",
+    "deadlock_audits": "deadlock_audits",
+    "admin_users": "admin_users"
+  },
+  "security": {
+    "enable_rls": true,
+    "admin_role_required": true
+  }
+}
